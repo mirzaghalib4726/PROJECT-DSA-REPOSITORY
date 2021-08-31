@@ -1,7 +1,7 @@
 #pragma once
 template <class G>
-struct NodeJS
+struct Node
 {
 	G data;
-	NodeJS<G>* next;
+	Node<G>* next;
 };

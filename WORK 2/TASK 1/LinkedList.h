@@ -1,5 +1,5 @@
 #pragma once
-#include "NodeJS.h"
+#include "Node.h"
 #include <iostream>
 using namespace std;
 
@@ -7,7 +7,7 @@ template <class G>
 class LinkedList
 {
 protected:
-	NodeJS<G>*  head;
+	Node<G>*  head;
 public:
 	LinkedList();
 	virtual ~LinkedList();
@@ -16,12 +16,10 @@ public:
 	virtual void insertAtTail(const G&) = 0;
 	virtual G deleteFromTail() = 0;
 	virtual bool isEmpty()const = 0;
-	virtual void sortInAscendingOrder() = 0;
-	virtual void sortInDescendingOrder() = 0;
-	virtual bool deleteTheValue(const G&) = 0;
-	virtual int searchPosition(const G&)const = 0;
 	virtual void displayFromHead()const = 0;
-	virtual bool isPalindrome() = 0;
+	virtual G front()const = 0;
+	virtual G rear()const = 0;
+	virtual int size()const = 0;
 };
 
 template<class G>
@@ -33,5 +31,12 @@ LinkedList<G>::LinkedList()
 template<class G>
 LinkedList<G>::~LinkedList()
 {
-
+	Node<G>* A = head;
+	while (A != nullptr)
+	{
+		head = head->next;
+		delete A;
+		A = nullptr;
+		A = head;
+	}
 }

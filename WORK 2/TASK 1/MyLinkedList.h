@@ -11,12 +11,10 @@ public:
 	void insertAtTail(const G&);
 	G deleteFromTail();
 	bool isEmpty()const;
-	void sortInAscendingOrder();
-	void sortInDescendingOrder();
-	bool deleteTheValue(const G&);
-	int searchPosition(const G&)const;
 	void displayFromHead()const;
-	bool isPalindrome();
+	G front()const;
+	G rear()const;
+	int size()const;
 };
 
 template<class G>
@@ -34,7 +32,7 @@ MyLinkedList<G>::~MyLinkedList()
 template<class G>
 void MyLinkedList<G>::insertAtHead(const G& value)
 {
-	NodeJS<G>* newNode = new NodeJS<G>();
+	Node<G>* newNode = new Node<G>();
 	newNode->data = value;
 	newNode->next = nullptr;
 
@@ -66,7 +64,7 @@ G MyLinkedList<G>::deleteFromHead()
 	else
 	{
 		value = LinkedList<G>::head->data;
-		NodeJS<G>* newNode = LinkedList<G>::head;
+		Node<G>* newNode = LinkedList<G>::head;
 		LinkedList<G>::head = LinkedList<G>::head->next;
 		delete[] newNode;
 		newNode = nullptr;
@@ -77,7 +75,7 @@ G MyLinkedList<G>::deleteFromHead()
 template<class G>
 void MyLinkedList<G>::insertAtTail(const G& value)
 {
-	NodeJS<G>* newNode = new NodeJS<G>();
+	Node<G>* newNode = new Node<G>();
 	newNode->data = value;
 	newNode->next = nullptr;
 
@@ -87,7 +85,7 @@ void MyLinkedList<G>::insertAtTail(const G& value)
 	}
 	else
 	{
-		NodeJS<G>* anotherNewNode = LinkedList<G>::head;
+		Node<G>* anotherNewNode = LinkedList<G>::head;
 		while (1)
 		{
 			if (anotherNewNode->next == nullptr)
@@ -116,13 +114,13 @@ G MyLinkedList<G>::deleteFromTail()
 	}
 	else
 	{
-		NodeJS<G>* newNode = LinkedList<G>::head;
+		Node<G>* newNode = LinkedList<G>::head;
 		while (1)
 		{
 			if (newNode->next->next == nullptr)
 			{
 				value = newNode->next->data;
-				NodeJS<G>* anotherNewNode = newNode->next;
+				Node<G>* anotherNewNode = newNode->next;
 				newNode->next = newNode->next->next;
 				delete[] anotherNewNode;
 				anotherNewNode = nullptr;
@@ -148,118 +146,6 @@ bool MyLinkedList<G>::isEmpty() const
 }
 
 template<class G>
-void MyLinkedList<G>::sortInAscendingOrder()
-{
-	if (LinkedList<G>::head == nullptr)
-	{
-		cout << "\nLinked List is Empty.\n";
-	}
-	else if (LinkedList<G>::head->next == nullptr)
-	{
-		cout << "\nOnly 1 Node Exists.\n";
-	}
-	else
-	{
-		NodeJS<G>* newNode = LinkedList<G>::head;
-		for (newNode; newNode->next != nullptr; newNode = newNode->next)
-		{
-			for (NodeJS<G>* anotherNewNode = newNode->next; anotherNewNode != nullptr; anotherNewNode = anotherNewNode->next)
-			{
-				if (newNode->data > anotherNewNode->data)
-				{
-					newNode->data = newNode->data + anotherNewNode->data;
-					anotherNewNode->data = newNode->data - anotherNewNode->data;
-					newNode->data = newNode->data - anotherNewNode->data;
-				}
-			}
-		}
-	}
-}
-
-template<class G>
-void MyLinkedList<G>::sortInDescendingOrder()
-{
-	if (LinkedList<G>::head == nullptr)
-	{
-		cout << "\nLinked List is Empty.\n";
-	}
-	else if (LinkedList<G>::head->next == nullptr)
-	{
-		cout << "\nOnly 1 Node Exists.\n";
-	}
-	else
-	{
-		NodeJS<G>* newNode = LinkedList<G>::head;
-		for (newNode; newNode->next != nullptr; newNode = newNode->next)
-		{
-			for (NodeJS<G>* anotherNewNode = newNode->next; anotherNewNode != nullptr; anotherNewNode = anotherNewNode->next)
-			{
-				if (newNode->data < anotherNewNode->data)
-				{
-					newNode->data = newNode->data + anotherNewNode->data;
-					anotherNewNode->data = newNode->data - anotherNewNode->data;
-					newNode->data = newNode->data - anotherNewNode->data;
-				}
-			}
-		}
-	}
-}
-
-template<class G>
-bool MyLinkedList<G>::deleteTheValue(const G& value)
-{
-	if (LinkedList<G>::head == nullptr)
-	{
-		cout << "Linked List is Empty.\n";
-	}
-	else if (LinkedList<G>::head->data == value)
-	{
-		deleteFromHead();
-		return true;
-	}
-	else
-	{
-		NodeJS <G>* newNode = LinkedList<G>::head;
-		for (newNode; newNode->next != nullptr; newNode = newNode->next)
-		{
-			if (newNode->next->data == value)
-			{
-				NodeJS<G>* anotherNewNode = newNode->next;
-				newNode->next = newNode->next->next;
-				delete[] anotherNewNode;
-				anotherNewNode = nullptr;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-template<class G>
-int MyLinkedList<G>::searchPosition(const G& value) const
-{
-	if (LinkedList<G>::head == nullptr)
-	{
-		cout << "Linked List is Empty.\n";
-		return -1;
-	}
-	else
-	{
-		NodeJS <G>* newNode = LinkedList<G>::head;
-		int index = 0;
-		for (newNode; newNode !=nullptr; newNode = newNode->next)
-		{
-			++index;
-			if (newNode->data == value)
-			{
-				return index;
-			}
-		}
-	}
-	return -1;
-}
-
-template<class G>
 void MyLinkedList<G>::displayFromHead() const
 {
 	if (LinkedList<G>::head == nullptr)
@@ -269,7 +155,7 @@ void MyLinkedList<G>::displayFromHead() const
 	else
 	{
 		int i = 0;
-		NodeJS<G>* newNode = LinkedList<G>::head;
+		Node<G>* newNode = LinkedList<G>::head;
 		for (newNode; newNode != nullptr; newNode = newNode->next, ++i)
 		{
 			cout << i << ". " << newNode->data << endl;
@@ -279,53 +165,42 @@ void MyLinkedList<G>::displayFromHead() const
 }
 
 template<class G>
-bool MyLinkedList<G>::isPalindrome()
+G MyLinkedList<G>::front() const
 {
-	if (LinkedList<G>::head == nullptr)
+	Node<G>* newNode = LinkedList<G>::head;
+	if (newNode != nullptr)
 	{
-		return false;
+		return newNode->data;
 	}
-	else if (LinkedList<G>::head->next == nullptr)
-	{
-		return true;
-	}
+	G A = {};
+	return A;
+}
 
-	NodeJS<G>* newNode = LinkedList<G>::head;
-	int size = 0;
-	while (newNode != nullptr)
+template<class G>
+G MyLinkedList<G>::rear() const
+{
+	Node<G>* newNode = LinkedList<G>::head;
+	if (newNode == nullptr)
 	{
-		++size;
+		G A = {};
+		return A;
+	}
+	while (newNode->next != nullptr)
+	{
 		newNode = newNode->next;
 	}
-	
-	NodeJS<G>* newNode1 = nullptr;
-	
-	int size1 = {};
-	int size2 = {};
+	return newNode->data;
+}
 
-	for (int i = 0; i <= size / 2; ++i)
+template<class G>
+inline int MyLinkedList<G>::size() const
+{
+	int count = {};
+	Node<G>* newNode = LinkedList<G>::head;
+	while (newNode != nullptr)
 	{
-		size1 = i;
-		size2 = size - i - 1;
-		newNode = LinkedList<G>::head;
-		newNode1 = LinkedList<G>::head;
-
-		while (size1 != 0)
-		{
-			size1 -= 1;
-			newNode = newNode->next;
-		}
-
-		while (size2 != 0)
-		{
-			size2 -= 1;
-			newNode1 = newNode1->next;
-		}
-
-		if (newNode->data != newNode1->data)
-		{
-			return false;
-		}
+		++count;
+		newNode = newNode->next;
 	}
-	return true;
+	return count;
 }
